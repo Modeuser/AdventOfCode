@@ -11,6 +11,7 @@ int main(void)
     while(!feof(fPointer)){
         fgets(currentValue, 150, fPointer);
         puts(currentValue);
+        //"puts" current works by displaying the correct numbers
     }
 
     printf("%d", newlineCounter);
