@@ -1,4 +1,4 @@
-# static variables
+# variables
 oppChoice = 0
 youChoice = 0
 
