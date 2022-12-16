@@ -53,7 +53,8 @@ def stackSorter (oldLog, instruct):
     remainingCrates = movingCrates[:-int(moveAmount)]
     movedCrates = (movingCrates[len(remainingCrates):])
     # reverses the moved crates since they're moving one by ones
-    movedCrates = movedCrates[::-1]
+    # remove the line below for day 5 part 2
+    # movedCrates = movedCrates[::-1]
 
     # stores the modified log in a new log
     newLog = oldLog.replace(movingCrates,remainingCrates)
