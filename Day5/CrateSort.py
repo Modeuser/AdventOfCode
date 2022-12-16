@@ -51,7 +51,9 @@ def stackSorter (oldLog, instruct):
         # get the moving crate by providing the stackID and stackID + 1
     movingCrates = oldLog[oldLog.find(fromStack):oldLog.find(str(int(fromStack)+1))]
     remainingCrates = movingCrates[:-int(moveAmount)]
-    movedCrates = movingCrates[len(remainingCrates):]
+    movedCrates = (movingCrates[len(remainingCrates):])
+    # reverses the moved crates since they're moving one by ones
+    movedCrates = movedCrates[::-1]
 
     # stores the modified log in a new log
     newLog = oldLog.replace(movingCrates,remainingCrates)
