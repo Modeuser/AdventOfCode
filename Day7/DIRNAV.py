@@ -10,9 +10,10 @@
 # takes in line (i.e the line where a '$ cd DIR-ID was found)
 # for each line in DIRLog[line of DIR-ID:end]:
 #   if it's a 'dir DIRID':
+#       re-call this function (line of $ cd DIRID, DIRLog)
 
-# we can get the number of dir after the '$ ls'
-# 
+#   this function should return the last nagivated line
+#   before the back-recursion & sum of file size
 
 
 
