@@ -1,33 +1,91 @@
-# go through the DIRLog
-# 'cd' marks a directory
-# perform DIR navigation for each unique DIR
-# 'number' marks a file
-# 
+# ========================================
+# Thoughts
+# for each 'dir xyz' there must be a corresponding 'cd ..'
 
-# could we use recursion?
+# Pseudo code
+#   for each '$ ls', between this line and the end:
+
+#       sizeTracker = 0
+#       dirTracker = 0
+
+#       find the next '$' line
+
+#       (now we have the start of the dir and the end of the dir)
+
+#       for each line between the start and the end of this 'ls'
+#           if the line is a number:
+#               parse it and add it to the sizeTracker
+#           if the line is a 'dir':
+#               dirTracker += 1
+#           if the line starts with '$':
+#               break
+#       for each line between the start and the entire log
+#           while dirTracker is not 0:
+#               if the line starts with number:
+#                   add number to sizeTracker
+#               if the line is '$ cd ..':
+#                   dirTracker -= 1
+#               if the line starts with 'dir xyz':
+#                   dirTracker += 1
+
+
+#           if the sizeTracker is > 100000:
+#               return 0
+#           else:
+#               return sizeTracker    
+
+# ====================================
+# Code
+
+def numConverter (line):
+    # removes everything pass the last space
+    newLine = line[:line.rfind(" ")]
+    newLine = int(newLine)
+    return newLine
+
 # a function that:
-# takes in DIRLog
-# takes in line (i.e the line where a '$ cd DIR-ID was found)
-# for each line in DIRLog[line of DIR-ID:end]:
-#   if it's a 'dir DIRID':
-#       re-call this function (line of $ cd DIRID, DIRLog)
-
-#   this function should return the last nagivated line
-#   before the back-recursion & sum of file size
+#   takes in a '$ ls' line and the original log
+#   returns sizeTracker if the dir size is <= 100000
+#   returns 0 if dir size is > 100000
 
 
+def sizeChecker(lineNumber, content):
 
+    sizeTracker = 0
+    dirTracker = 0
 
+    for line in range((lineNumber+1), len(content)):
+        if ord(content[line][0]) in range(48, 58):
+            sizeTracker += numConverter(content[line])
+        if content[line][0] == 'd':
+            dirTracker += 1
+        # failsafe incase the last line is not a $
+        if content[line][0] == '$' or line == len(content):
+            endLine = line
+            break
 
-# main function
-# with open('DIRLog.txt') as file:
+    if dirTracker > 0:
+        for line in range((endLine), len(content)):
+            if ord(content[line][0]) in range(48, 58):
+                sizeTracker += numConverter(content[line])
+            if content[line][0] == 'd':
+                dirTracker += 1
+            if content[line] == '$ cd ..\n':
+                dirTracker -= 1
+            if dirTracker == 0:
+                break
+    
+    if sizeTracker > 100000:
+        return 0
+    else:
+        return sizeTracker
 
-# for line in DIRLog
-#   if line starts with '$ cd DIR-ID':
-#       PH = DIRNAVSUM(line, DIRLog)
-#       
+with open ('DIRLog.txt') as file:
 
+    totalSize = 0
 
-#   DIRNAVSUM should return the sum of all the items for each respective DIR-ID
-#   if PH <= 10000:
-#       sumTracker += PH
+    content = file.readlines()
+    for line in range(len(content)):
+        if content[line] == '$ ls\n':
+            totalSize += sizeChecker(line,content)
+    print(totalSize)
