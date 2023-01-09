@@ -1,4 +1,3 @@
-
 # a function that takes in the position of an int and content
 # check if any value from it to the edge is >= to it
 # returns true if nothing is larger than it
